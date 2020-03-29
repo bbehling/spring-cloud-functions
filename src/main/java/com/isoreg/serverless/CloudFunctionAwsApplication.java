@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.isoreg.serverless.models.Re_Register;
+import com.isoreg.serverless.models.RE_Register;
 import com.isoreg.serverless.repositories.RE_RegisterRepository;
 
 @SpringBootApplication
@@ -28,7 +28,7 @@ public class CloudFunctionAwsApplication {
     }
 
     @Bean
-    public Function<String, Iterable<Re_Register>> findAllBean() {
+    public Function<String, Iterable<RE_Register>> findAllBean() {
         return value -> repository.findAll();
     }
 

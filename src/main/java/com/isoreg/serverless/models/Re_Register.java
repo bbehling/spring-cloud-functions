@@ -1,17 +1,31 @@
 package com.isoreg.serverless.models;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 //@Table(name = "re_register")
 @Entity
 // @Table(name = "organization")
-public class Re_Register {
+public class RE_Register {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     // @Column(name = "uuid")
@@ -27,7 +41,7 @@ public class Re_Register {
 
     private String text;
 
-    public String getext() {
+    public String getText() {
         return text;
     }
 
@@ -95,16 +109,6 @@ public class Re_Register {
         this.citation_uuid = citation_uuid;
     }
 
-    private UUID manager_uuid;
-
-    public UUID getManager_uuid() {
-        return manager_uuid;
-    }
-
-    public void setManager_uuid(UUID manager_uuid) {
-        this.manager_uuid = manager_uuid;
-    }
-
     private UUID operatinglanguage_uuid;
 
     public UUID getOperatinglanguage_uuid() {
@@ -134,4 +138,45 @@ public class Re_Register {
     public void setUniformresourceidentifier_uuid(UUID uniformresourceidentifier_uuid) {
         this.uniformresourceidentifier_uuid = uniformresourceidentifier_uuid;
     }
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private RE_RegisterManager manager;
+
+    public RE_RegisterManager getManager() {
+        return manager;
+    }
+
+    public void setManager(RE_RegisterManager manager) {
+        this.manager = manager;
+    }
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "re_register_itemclasses", joinColumns = @JoinColumn(name = "registerid"), inverseJoinColumns = @JoinColumn(name = "itemclassid"))
+    private Set<RE_ItemClass> containedItemClasses;
+
+    public Set<RE_ItemClass> getContainedItemClasses() {
+        if (this.containedItemClasses == null) {
+            this.containedItemClasses = new LinkedHashSet<RE_ItemClass>();
+        }
+
+        List<RE_ItemClass> temp = new ArrayList<RE_ItemClass>();
+        temp.addAll(this.containedItemClasses);
+
+        Collections.sort(temp, new Comparator<RE_ItemClass>() {
+            @Override
+            public int compare(RE_ItemClass o1, RE_ItemClass o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        Set<RE_ItemClass> result = new LinkedHashSet<RE_ItemClass>();
+        result.addAll(temp);
+
+        return result;
+    }
+
+    protected void setContainedItemClasses(Set<RE_ItemClass> containedItemClasses) {
+        this.containedItemClasses = containedItemClasses;
+    }
+
 }
