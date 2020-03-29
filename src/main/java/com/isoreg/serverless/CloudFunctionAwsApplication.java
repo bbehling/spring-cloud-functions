@@ -28,7 +28,7 @@ public class CloudFunctionAwsApplication {
     }
 
     @Bean
-    public Function<String, Iterable<Re_Register>> findAll() {
+    public Function<String, Iterable<Re_Register>> findAllBean() {
         return value -> repository.findAll();
     }
 
