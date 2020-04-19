@@ -2,6 +2,6 @@ package com.isoreg.serverless;
 
 import org.springframework.cloud.function.adapter.aws.SpringBootRequestHandler;
 
-public class StringReverseHandler extends SpringBootRequestHandler<String, String> {
+public class ServerlessRequestHandler extends SpringBootRequestHandler<String, String> {
 
 }

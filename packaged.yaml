@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Example API written with SpringBoot with the spring-cloud-function-adapter-aws
+  library
+Resources:
+  reverseString:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.isoreg.serverless.StringReverseHandler::handleRequest
+      Runtime: java8
+      CodeUri: s3://sam-test-css-llc/7257570fee1585f1af557d64be66f9d3
+      MemorySize: 1512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 60
+      Environment:
+        Variables:
+          ENVIRONMENT: test
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /findAllBean
+            Method: ANY
